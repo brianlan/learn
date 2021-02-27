@@ -92,7 +92,7 @@ def conv2d(
         dilation (int, optional): Defaults to 0.
 
     Returns:
-        np.ndarray: result tensor, of shape (N, C_out, _, _), 
+        np.ndarray: result tensor, of shape (N, C_out, _, _),
                     the spatial size depends on stride, padding.
     """
     if input.ndim == 3:
@@ -103,22 +103,26 @@ def conv2d(
     if bias is None:
         bias = np.zeros((weight.shape[0],))
     assert weight.shape[0] == bias.shape[0]
-    assert weight.shape[2] == weight.shape[3], 'non-equal kernel size not supported'
+    assert weight.shape[2] == weight.shape[3], "non-equal kernel size not supported"
     C_out, _, K, _ = weight.shape
-    padded_input = np.pad(input, ((0, 0), (0, 0), (padding, padding), (padding, padding)), constant_values=0.)
+    padded_input = np.pad(
+        input, ((0, 0), (0, 0), (padding, padding), (padding, padding)), constant_values=0.0
+    )
     N, C_in, H, W = padded_input.shape
     C_in_grp = C_in // groups  # C_in group size
     C_out_grp = C_out // groups  # C_out group size
     out = []
     for g in range(groups):
-        input_g = padded_input[:, g*C_in_grp:(g+1)*C_in_grp]
-        weight_g = weight[g*C_out_grp:(g+1)*C_out_grp, ...]
-        bias_g = bias[g*C_out_grp:(g+1)*C_out_grp]
+        input_g = padded_input[:, g * C_in_grp : (g + 1) * C_in_grp]
+        weight_g = weight[g * C_out_grp : (g + 1) * C_out_grp, ...]
+        bias_g = bias[g * C_out_grp : (g + 1) * C_out_grp]
         out_g = np.zeros((N, C_out_grp, (H - K + 1) // stride, (W - K + 1) // stride))
         for i in range((H - K + 1) // stride):
             for j in range((W - K + 1) // stride):
                 si, sj = stride * i, stride * j
-                input_block = input_g[:, None, :, si:si+K, sj:sj+K]
-                out_g[:, :, i, j] = (input_block * weight_g).reshape(N, C_out_grp, -1).sum(axis=2) + bias_g[None, :]
+                input_block = input_g[:, None, :, si : si + K, sj : sj + K]
+                out_g[:, :, i, j] = (input_block * weight_g).reshape(N, C_out_grp, -1).sum(
+                    axis=2
+                ) + bias_g[None, :]
         out.append(out_g)
     return np.concatenate(out, axis=1)
