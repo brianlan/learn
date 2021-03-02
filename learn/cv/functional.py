@@ -9,22 +9,21 @@ def area(bboxes: np.array) -> np.ndarray:
     Parameters
     ----------
     bboxes : np.array
-        of shape `(N, 4)`, coordinates in box: `[xmin, ymin, xmax, ymax]`
-        pls. note, `(xmax - 1, ymax - 1)` is the bottom right pixel
+        of shape ``(N, 4)``, coordinates in box: ``[xmin, ymin, xmax, ymax]``
+        pls. note, ``(xmax - 1, ymax - 1)`` is the bottom right pixel
 
     Returns
     -------
     np.ndarray
-        of shape `(N, )`
+        of shape ``(N, )``
     
     Examples
     --------
-    .. code:: python
-        >>> bboxes = np.array([[1, 2, 4, 6], [3, 0, 5, 4]])
-        >>> areas = area(bboxes)
-        >>> areas
-        np.array([12, 8])
-        
+    >>> import numpy as np
+    >>> bboxes = np.array([[1, 2, 4, 6], [3, 0, 5, 4]])
+    >>> areas = area(bboxes)
+    >>> areas
+    np.array([12, 8])
     """
     if bboxes.ndim == 1:
         bboxes = np.expand_dims(bboxes, axis=0)
@@ -43,16 +42,16 @@ def iou(a: np.ndarray, b: np.ndarray) -> np.ndarray:
     Parameters
     ----------
     a : np.ndarray
-        of shape `(N, 4)`, coordinates in box: `[xmin, ymin, xmax, ymax]`
-        pls. note, `(xmax - 1, ymax - 1)` is the bottom right pixel
+        of shape ``(N, 4)``, coordinates in box: ``[xmin, ymin, xmax, ymax]``
+        pls. note, ``(xmax - 1, ymax - 1)`` is the bottom right pixel
     b : np.ndarray
-        of shape `(N, 4)`, coordinates in box: `[xmin, ymin, xmax, ymax]`
-        pls. note, `(xmax - 1, ymax - 1)` is the bottom right pixel
+        of shape ``(N, 4)``, coordinates in box: ``[xmin, ymin, xmax, ymax]``
+        pls. note, ``(xmax - 1, ymax - 1)`` is the bottom right pixel
 
     Returns
     -------
     np.ndarray
-        ious of given sets of bounding boxes, of shape `(N, )`
+        ious of given sets of bounding boxes, of shape ``(N, )``
     """
     if a.ndim == 1:
         a = np.expand_dims(a, axis=0)
@@ -72,13 +71,13 @@ def iou(a: np.ndarray, b: np.ndarray) -> np.ndarray:
 
 
 def nms(bboxes: np.ndarray, iou_thresh: float = 0.7) -> Tuple[np.ndarray, np.ndarray]:
-    """Non-Maximum Suppression. Computational complexity: O(n^2). No sorting involved.
+    """Non-Maximum Suppression. Computational complexity: :math:`O(n^2)`. No sorting involved.
 
     Parameters
     ----------
     bboxes : np.ndarray
-        bounding boxes of shape `(N, 5)`,
-        each bbox consist of `[xmin, ymin, xmax, ymax, score]`
+        bounding boxes of shape ``(N, 5)``,
+        each bbox consist of ``[xmin, ymin, xmax, ymax, score]``
     iou_thresh : float, optional
         2 boxes with their iou higher than this value are considered similar in location, by default 0.7
 
@@ -115,11 +114,11 @@ def conv2d(
     Parameters
     ----------
     input : np.ndarray
-        of shape `(N, C_in, H, W)`
+        of shape ``(N, C_in, H, W)``
     weight : np.ndarray
-        of shape `(C_out, C_in, K, K)`, `K` is the kernel size.
+        of shape ``(C_out, C_in, K, K)``, ``K`` is the kernel size.
     bias : np.ndarray, optional
-        if given, the shape should be `(C_out,)`, by default None
+        if given, the shape should be ``(C_out,)``, by default None
     stride : int, optional
         by default 1
     padding : int, optional
@@ -132,7 +131,7 @@ def conv2d(
     Returns
     -------
     np.ndarray
-        result tensor, of shape `(N, C_out, _, _)`,
+        result tensor, of shape ``(N, C_out, _, _)``,
         the spatial size depends on stride, padding.
     """
     if input.ndim == 3:
