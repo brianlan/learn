@@ -12,7 +12,13 @@ def test_area():
     assert pytest.approx(area(np.array([18,  7, 16,  5]))[0]) == 0
     assert pytest.approx(area(np.array([16,  7, 18,  5]))[0]) == 0
     assert pytest.approx(area(np.array([18,  5, 16,  7]))[0]) == 0
-    
+
+
+def test_area2():
+    bboxes = np.array([[1, 2, 4, 6], [3, 0, 5, 4]])
+    areas = area(bboxes)
+    np.testing.assert_almost_equal(areas, np.array([12, 8]))
+
 
 def test_iou_single():
     x = np.array([1, 2, 5, 7])
